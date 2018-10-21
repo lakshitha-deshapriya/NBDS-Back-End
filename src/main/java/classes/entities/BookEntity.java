@@ -17,7 +17,21 @@ public class BookEntity {
     private Date lastTakenDate;
     private String image;
 
+    public BookEntity() {
+    }
+
+    public BookEntity(String bookTitle, String description, String author, Date publishedDate, String category, String publisher) {
+        this.bookTitle = bookTitle;
+        this.description = description;
+        this.author = author;
+        this.publishedDate = publishedDate;
+        this.category = category;
+        this.publisher = publisher;
+//        this.image = image;
+    }
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "BOOK_ID")
     public int getBookId() {
         return bookId;

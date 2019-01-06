@@ -1,7 +1,6 @@
 package classes.model;
 
-import java.io.File;
-import java.util.Date;
+import java.sql.Date;
 
 public class BookModel {
     private int bookId;
@@ -13,7 +12,8 @@ public class BookModel {
     private String publisher;
     private String lastTakenPerson;
     private Date lastTakenDate;
-    private File image;
+    private String imageName;
+    private String imagePath;
 
     public int getBookId() {
         return bookId;
@@ -87,12 +87,20 @@ public class BookModel {
         this.lastTakenDate = lastTakenDate;
     }
 
-    public File getImage() {
-        return image;
+    public String getImageName() {
+        return imageName;
     }
 
-    public void setImage(File image) {
-        this.image = image;
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }
 

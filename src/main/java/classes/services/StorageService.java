@@ -1,21 +1,15 @@
 package classes.services;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class StorageService {
     private String filePath = System.getProperty("user.dir") + File.separator +"src/main/java/assets/images/";
-    private final Path rootLocation = Paths.get( filePath );
 
     public void store(MultipartFile file) {
         try {
@@ -28,21 +22,18 @@ public class StorageService {
         }
     }
 
-    public Resource loadFile(String filename) {
+    public byte[] loadImage(String filename) {
         try {
-            Path file = rootLocation.resolve(filename);
-            Resource resource = new UrlResource(file.toUri());
-            if (resource.exists() || resource.isReadable()) {
-                return resource;
-            } else {
-                throw new RuntimeException("FAIL!");
+            File file = new File(filePath + filename);
+            byte[] fileContent = new byte[(int) file.length()];
+            try (FileInputStream inputStream = new FileInputStream(file)) {
+                inputStream.read(fileContent);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (MalformedURLException e) {
+            return fileContent;
+        } catch (Exception e) {
             throw new RuntimeException("FAIL!");
         }
-    }
-
-    public void deleteAll() {
-        FileSystemUtils.deleteRecursively(rootLocation.toFile());
     }
 }

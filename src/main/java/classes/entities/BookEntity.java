@@ -20,14 +20,14 @@ public class BookEntity {
     public BookEntity() {
     }
 
-    public BookEntity(String bookTitle, String description, String author, Date publishedDate, String category, String publisher) {
+    public BookEntity(String bookTitle, String description, String author, Date publishedDate, String category, String publisher, String imageName) {
         this.bookTitle = bookTitle;
         this.description = description;
         this.author = author;
         this.publishedDate = publishedDate;
         this.category = category;
         this.publisher = publisher;
-//        this.image = image;
+        this.image = imageName;
     }
 
     @Id

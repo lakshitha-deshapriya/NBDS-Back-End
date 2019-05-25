@@ -6,15 +6,11 @@ import classes.model.BookModel;
 import classes.services.BookService;
 import classes.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,6 +55,7 @@ public class BookController {
     @RequestMapping(method = RequestMethod.POST)
     public BookEntity InsertBook(@RequestBody BookModel book) {
         BookEntity bookEntity = new BookEntity(
+                book.getBookCode(),
                 book.getBookTitle(),
                 book.getDescription(),
                 book.getAuthor(),

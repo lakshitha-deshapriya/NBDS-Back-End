@@ -5,6 +5,7 @@ import java.sql.Date;
 public class BookModel {
     private int bookId;
     private String bookTitle;
+    private String bookCode;
     private String description;
     private String author;
     private Date publishedDate;
@@ -21,6 +22,14 @@ public class BookModel {
 
     public void setBookId(int bookId) {
         this.bookId = bookId;
+    }
+
+    public String getBookCode() {
+        return bookCode;
+    }
+
+    public void setBookCode(String bookCode) {
+        this.bookCode = bookCode;
     }
 
     public String getBookTitle() {

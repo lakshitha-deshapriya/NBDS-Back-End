@@ -7,6 +7,7 @@ import java.sql.Date;
 @Table(name = "book", schema = "nbds_library", catalog = "")
 public class BookEntity {
     private int bookId;
+    private String bookCode;
     private String bookTitle;
     private String description;
     private String author;
@@ -20,7 +21,8 @@ public class BookEntity {
     public BookEntity() {
     }
 
-    public BookEntity(String bookTitle, String description, String author, Date publishedDate, String category, String publisher, String imageName) {
+    public BookEntity(String bookCode, String bookTitle, String description, String author, Date publishedDate, String category, String publisher, String imageName) {
+        this.bookCode = bookCode;
         this.bookTitle = bookTitle;
         this.description = description;
         this.author = author;
@@ -39,6 +41,16 @@ public class BookEntity {
 
     public void setBookId(int bookId) {
         this.bookId = bookId;
+    }
+
+    @Basic
+    @Column(name = "BOOK_CODE")
+    public String getBookCode() {
+        return bookCode;
+    }
+
+    public void setBookCode(String bookCode) {
+        this.bookCode = bookCode;
     }
 
     @Basic

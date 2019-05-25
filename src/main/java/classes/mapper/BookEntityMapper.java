@@ -8,6 +8,7 @@ public class BookEntityMapper {
     public static BookModel getBookModelFromBookEntity(BookEntity bookEntity )
     {
         BookModel model = new BookModel();
+        model.setBookCode( bookEntity.getBookCode() );
         model.setBookId( bookEntity.getBookId() );
         model.setBookTitle( bookEntity.getBookTitle() );
         model.setAuthor( bookEntity.getAuthor() );

@@ -6,7 +6,7 @@
     <groupId>nbds</groupId>
     <artifactId>library</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <!--<packaging>war</packaging>-->
 
     <name>NBDS-Library</name>
     <description>NBDS Library</description>

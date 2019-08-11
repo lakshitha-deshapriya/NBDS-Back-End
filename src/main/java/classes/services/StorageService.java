@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class StorageService {
-    private String filePath = System.getProperty("user.dir").replace("bin","") + "assets/images/";
+    private String filePath = System.getProperty("user.dir").replace("bin","") + "/assets/images/";
 
     public void store(MultipartFile file) {
         try {

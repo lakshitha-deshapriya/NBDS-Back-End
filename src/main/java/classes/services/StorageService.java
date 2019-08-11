@@ -24,8 +24,6 @@ public class StorageService {
 
     public byte[] loadImage(String filename) {
         try {
-            System.out.println(filePath);
-            System.out.println(System.getProperty("user.dir"));
             File file = new File(filePath + filename);
             byte[] fileContent = new byte[(int) file.length()];
             try (FileInputStream inputStream = new FileInputStream(file)) {

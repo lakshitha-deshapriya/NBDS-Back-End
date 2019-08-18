@@ -1,6 +1,7 @@
 package classes.controllers;
 
 import classes.entities.BookEntity;
+import classes.entities.ImagesCacheEntity;
 import classes.mapper.BookEntityMapper;
 import classes.model.BookModel;
 import classes.services.BookService;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("books")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "**")
 public class BookController {
 
     @Autowired
@@ -52,8 +53,28 @@ public class BookController {
         }
     }
 
+    @RequestMapping(value = "/uploadImageToDb", method = RequestMethod.POST)
+    public ResponseEntity<String> handleFileUploadToDb(@RequestParam("file") MultipartFile file) {
+        String message;
+        try {
+            ImagesCacheEntity image = storageService.storeInDb(file);
+            if ( image != null )
+            {
+                message = "You successfully uploaded " + file.getOriginalFilename() + "!";
+            }
+            else
+            {
+                message = "FAIL to upload " + file.getOriginalFilename() + "!";
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(message);
+        } catch (Exception e) {
+            message = "FAIL to upload " + file.getOriginalFilename() + "!";
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
+        }
+    }
+
     @RequestMapping(method = RequestMethod.POST)
-    public BookEntity InsertBook(@RequestBody BookModel book) {
+    public ResponseEntity<Object> InsertBook(@RequestBody BookModel book) {
         BookEntity bookEntity = new BookEntity(
                 book.getBookCode(),
                 book.getBookTitle(),
@@ -63,7 +84,20 @@ public class BookController {
                 book.getCategory(),
                 book.getPublisher(),
                 book.getImageName());
-        return this.bookService.InsertBook(bookEntity);
+        if (book.getBookId() != -1)
+        {
+            bookEntity.setBookId( book.getBookId() );
+        }
+        BookEntity savedBook = this.bookService.InsertBook(bookEntity);
+        if (savedBook != null)
+        {
+            return ResponseEntity.ok()
+                    .body( BookEntityMapper.getBookModelFromBookEntity( savedBook ) );
+        }
+        else
+        {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body( "Saving failed" );
+        }
     }
 
     @RequestMapping(value = "/loadImage", method = RequestMethod.GET)
@@ -73,6 +107,21 @@ public class BookController {
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + imageName + "\"")
                     .body(image);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Not Found");
+    }
+
+    @RequestMapping(value = "/loadImageDb", method = RequestMethod.GET)
+    public ResponseEntity<Object> loadImageFromDb(@RequestParam String imageName) {
+        try {
+            Object image = storageService.loadImageFromDb(imageName);
+            if (image != null) {
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + imageName + "\"")
+                        .body(image);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

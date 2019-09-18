@@ -37,6 +37,10 @@ public class BookCache {
         this.BOOK_CACHE.remove(book.getBookId());
     }
 
+	public void removeFromCacheById( int bookId ) {
+		this.BOOK_CACHE.remove( bookId );
+	}
+
     public boolean isInitialized() {
         return BOOK_CACHE != null;
     }

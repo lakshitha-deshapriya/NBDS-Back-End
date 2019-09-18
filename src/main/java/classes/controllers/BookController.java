@@ -127,4 +127,10 @@ public class BookController {
         }
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Not Found");
     }
+
+	@RequestMapping(value = "/remove", method = RequestMethod.POST)
+	public ResponseEntity<String> removeBook( @RequestBody int bookId )
+	{
+		return this.bookService.removeBook( bookId );
+	}
 }

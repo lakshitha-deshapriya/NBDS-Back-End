@@ -4,6 +4,8 @@ import classes.cache.BookCache;
 import classes.entities.BookEntity;
 import classes.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ public class BookService {
     public List<BookEntity> getAllBooks() {
         BookCache bookCache = BookCache.getInstance();
         if ( !bookCache.isInitialized() ) {
-            List<BookEntity> books = bookRepository.findAll();
+            List<BookEntity> books = this.bookRepository.findAll();
             BookCache.getInstance().addToCache(books);
         }
         return bookCache.getAllBooks();
@@ -37,4 +39,18 @@ public class BookService {
         }
         return newBook;
     }
+
+    public ResponseEntity<String> removeBook( int bookId )
+	{
+		try
+		{
+			this.bookRepository.deleteById( bookId );
+			BookCache.getInstance().removeFromCacheById( bookId );
+			return ResponseEntity.status( HttpStatus.OK ).body( "Deletion Success" );
+		}
+		catch ( Exception e )
+		{
+			return ResponseEntity.status( HttpStatus.EXPECTATION_FAILED ).body( "Delete failed: " + e.getMessage() );
+		}
+	}
 }
